@@ -1,3 +1,17 @@
+api_login_check:
+    path: /api/login_check
+login:
+    pattern: ^/api/login
+    stateless: true
+    json_login:
+        check_path: /api/login_check
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+api:
+    pattern: ^/api
+    stateless: true
+    jwt: ~ 
+
 # yaml-language-server: $schema=../vendor/symfony/routing/Loader/schema/routing.schema.json
 
 # This file is the entry point to configure the routes of your app.
@@ -9,3 +23,5 @@
 
 controllers:
     resource: routing.controllers
+
+
