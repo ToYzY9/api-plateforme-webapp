@@ -21,8 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new GetCollection(),
-        new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
+        new GetCollection(
+            uriTemplate: '/profil',
+            normalizationContext: ['groups' => ['user:profil']],
+        ),
+        new Post(processor: UserPasswordHasher::class,
+            validationContext: ['groups' => ['Default', 'user:create']]),
         new Get(),
         new Put(processor: UserPasswordHasher::class),
         new Patch(processor: UserPasswordHasher::class),
@@ -36,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','user:profil'])]
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
@@ -44,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['user:read', 'user:create', 'user:update','user:profil'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -56,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['user:profil'])]
     private array $roles = [];
 
     #[ORM\Column(length: 50, nullable: true)]
@@ -65,19 +70,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         max: 50,
         minMessage: 'Your first name must be at least {{ limit }} characters long',
         maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
-    )]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
-    private ?string $firstname = null;
+        )]
+        #[Groups(['user:read', 'user:create', 'user:update', 'user:profil'])]
+        private ?string $firstname = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-        minMessage: 'Your first name must be at least {{ limit }} characters long',
-        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
-    )]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+        #[ORM\Column(length: 50, nullable: true)]
+        #[Assert\NotBlank]
+        #[Assert\Length(
+            min: 2,
+            max: 50,
+            minMessage: 'Your first name must be at least {{ limit }} characters long',
+            maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
+            )]
+    #[Groups(['user:read', 'user:create', 'user:update', 'user:profil'])]
     private ?string $lastname = null;
 
 

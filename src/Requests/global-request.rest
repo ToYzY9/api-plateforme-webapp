@@ -1,0 +1,23 @@
+### GetAllUsers
+GET http://127.0.0.1:8000/api/users/2
+
+### AddNewUser
+POST http://127.0.0.1:8000/api/users
+Content-Type: application/json
+
+{
+    "email": "user4@example.com",
+    "plainPassword": "123456",
+    "firstname": "users4",
+    "lastname": "example4"
+}
+
+### CheckTokenByUserAuth
+POST http://127.0.0.1:8000/api/login_check
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "user2@example.com",
+    "password": "123456"
+}
