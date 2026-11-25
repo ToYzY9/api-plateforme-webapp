@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
+use App\State\ProfileProvider;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,9 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new GetCollection(
+        new GetCollection(provider: ProfileProvider::class,
             uriTemplate: '/profil',
             normalizationContext: ['groups' => ['user:profil']],
+            security: "is_granted('IS_AUTHENTICATED_FULLY')"
         ),
         new Post(processor: UserPasswordHasher::class,
             validationContext: ['groups' => ['Default', 'user:create']]),
