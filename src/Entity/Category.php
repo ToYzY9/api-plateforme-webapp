@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\CategoryRepository;
 use App\State\UserPasswordHasher;
 use App\State\CategoryAlphabeticalProvider;
+use App\State\CategoryBooksProvider;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,6 +42,13 @@ use Doctrine\ORM\Mapping as ORM;
             normalizationContext: ['groups' => ['category:list']],
             outputFormats: ['json' => ['application/json']]
         ),
+        new GetCollection(
+            uriTemplate: '/categories/{id}/books',
+            uriVariables: ['id' => 'int'],
+            provider: CategoryBooksProvider::class,
+            normalizationContext: ['groups' => ['category:list']],
+            outputFormats: ['json' => ['application/json']]
+        )
     ],
     normalizationContext: ['groups' => ['category:read', 'category:list']],
     denormalizationContext: ['groups' => ['category:create', 'category:update']],

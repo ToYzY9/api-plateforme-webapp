@@ -6,6 +6,7 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -13,15 +14,19 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['category:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['category:list'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['category:list'])]
     private ?string $resume = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['category:list'])]
     private ?string $author = null;
 
     #[ORM\Column]
@@ -31,6 +36,7 @@ class Book
      * @var Collection<int, Category>
      */
     #[ORM\ManyToMany(targetEntity: Category::class)]
+    #[Groups(['category:list'])]
     private Collection $categories;
 
     public function __construct()
